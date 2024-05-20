@@ -47,19 +47,23 @@
                         <hr>
                     </div>
                 </div>
-                <form>
+                <form method="POST">
+                    @csrf
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input class="form-control form-control-lg" type="email" name="email"
                             placeholder="Enter your email" />
+                            @error('email')
+                            <span class="d-block invalid-feedback">{{$message}}</span>
+                            @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Password</label>
                         <input class="form-control form-control-lg" type="password" name="password"
                             placeholder="Enter your password" />
-                        <small>
+                        {{-- <small>
                             <a href="auth-reset-password.html">Forgot password?</a>
-                        </small>
+                        </small> --}}
                     </div>
                     <div>
                         <div class="form-check align-items-center">
@@ -69,7 +73,7 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 mt-3">
-                        <a href="dashboard-default.html" class="btn btn-lg btn-primary">Sign in</a>
+                        <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
                     </div>
                 </form>
             </div>

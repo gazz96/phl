@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\SatuanKerjaController;
+use App\Http\Controllers\Api\WilayahController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('provinsi', [WilayahController::class, 'provinsi']);
+Route::get('kota', [WilayahController::class, 'kota']);
+Route::get('kecamatan', [WilayahController::class, 'kecamatan']);
+Route::get('kelurahan', [WilayahController::class, 'kelurahan']);
+
+Route::get('satker', [SatuanKerjaController::class, 'index'])->name('api.satker');
