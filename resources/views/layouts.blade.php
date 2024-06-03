@@ -82,19 +82,19 @@
 
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{route('satuan-kerja.index')}}" class="sidebar-link">
                             <i class="align-middle text-body" data-lucide="file"></i>
                             <span>Satuan Kerja</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{route('anggota.index')}}" class="sidebar-link">
                             <i class="align-middle text-body" data-lucide="users"></i>
                             <span>Anggota</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{route('user.index')}}" class="sidebar-link">
                             <i class="align-middle text-body" data-lucide="user-check"></i>
                             <span>Pegawai</span>
                         </a>

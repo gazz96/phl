@@ -26,13 +26,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'formSignin']);
 Route::post('/', [AuthController::class, 'signIn']);
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::resource('wilayah-hukum', WilayahHukumController::class);
-Route::resource('role', RoleController::class);
-Route::resource('user', UserController::class);
-Route::resource('anggota', AnggotaController::class);
-Route::resource('provinsi', ProvinsiController::class);
-Route::resource('kota', KotaController::class);
-Route::resource('kabupaten', KabupatenController::class);
-Route::resource('kecamatan', KecamatanController::class);
-Route::resource('satuan-kerja', SatuanKerjaController::class);
+Route::prefix('dasboard')->group(function(){
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('wilayah-hukum', WilayahHukumController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('anggota', AnggotaController::class);
+    Route::resource('provinsi', ProvinsiController::class);
+    Route::resource('kota', KotaController::class);
+    Route::resource('kabupaten', KabupatenController::class);
+    Route::resource('kecamatan', KecamatanController::class);
+    Route::resource('satuan-kerja', SatuanKerjaController::class);
+
+});
