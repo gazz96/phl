@@ -26,3 +26,8 @@ Route::get('kecamatan', [WilayahController::class, 'kecamatan']);
 Route::get('kelurahan', [WilayahController::class, 'kelurahan']);
 
 Route::get('satker', [SatuanKerjaController::class, 'index'])->name('api.satker');
+
+Route::prefix('upload')
+    ->group(function(){
+        //Route::post('');
+    });

@@ -6,6 +6,7 @@ use App\Models\Anggota;
 use App\Models\SatuanKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class AnggotaController extends Controller
 {
@@ -29,7 +30,32 @@ class AnggotaController extends Controller
     {
         $koleksi = $this->model->when($request->s, function($query, $keyword){
             return $query->where("nama", "LIKE", "%{$keyword}%");
-        })->paginate(20);
+        })
+        ->when($request->status, function($query, $status){
+            return $query->where('status', $status);
+        })
+        ->when($request->jenis_kelamin, function($query, $jk){
+            if($jk == "Pria") {
+                return $query->where('jenis_kelamin', 0);
+            }else {
+                return $query->where('jenis_kelamin', 1);
+            }
+        })
+        ->when($request->nama, function($query, $nama){
+            return $query->where('nama', 'LIKE', '%' . $nama . '%');
+        })
+        ->when($request->satuan_id, function($query, $satuan_id){
+            return $query->where('satuan_kerja_id', $satuan_id);
+        })
+        ->when($request->jabatan, function($query, $jabatan){
+        
+        })
+        ->when($request->user(), function($query, $user){
+            if($user->role_id == 1) {
+                return $query->where('satuan_kerja_id', $user->satuan_kerja_id);
+            }
+        })
+        ->paginate(20);
         $koleksi_satuan_kerja = SatuanKerja::orderBy('nama', 'ASC')->get();
         return view("{$this->slug}.index", compact("koleksi", "koleksi_satuan_kerja"));
     }
@@ -43,6 +69,12 @@ class AnggotaController extends Controller
     {
         $model = $this->model;
         $koleksi_satuan_kerja = SatuanKerja::orderBy('nama', 'ASC')->get();
+
+        if(Auth::user()->role_id == 1)
+        {
+            $koleksi_satuan_kerja = SatuanKerja::where('id', Auth::user()->satuan_kerja_id)->orderBy('nama', 'ASC')->get();
+        }        
+
         return view("{$this->slug}.form", compact('model', 'koleksi_satuan_kerja'));
     }
 
@@ -54,14 +86,10 @@ class AnggotaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'wilayah_hukum_id' => 'nullable',
-            'nama' => 'required'
-        ]);
 
-        $model = $this->model->create($validated);
+        $model = $this->model->create($request->all());
 
-        return redirect(route("{$this->slug}.index"))
+        return redirect(route("{$this->slug}.edit", $model->id))
             ->with('status', 'success')
             ->with('message', 'Berhasil menyimpan');
     }
@@ -72,9 +100,10 @@ class AnggotaController extends Controller
      * @param  \App\Models\Anggota  $anggota
      * @return \Illuminate\Http\Response
      */
-    public function show(Anggota $anggota)
+    public function show($id)
     {
-        
+        $anggota = Anggota::findOrFail($id);
+        return view("{$this->slug}.show", compact('anggota'));
     }
 
     /**
@@ -83,11 +112,13 @@ class AnggotaController extends Controller
      * @param  \App\Models\Anggota  $anggota
      * @return \Illuminate\Http\Response
      */
-    public function edit(Anggota $anggota)
+    public function edit($id)
     {
+        $anggota = Anggota::findOrFail($id);
         $slug = Str::replace('-', '_', $this->slug);
         $model = $$slug;
-        return view("{$this->slug}.form", compact('model'));
+        $koleksi_satuan_kerja = SatuanKerja::orderBy('nama', 'ASC')->get();
+        return view("{$this->slug}.form", compact('model', 'koleksi_satuan_kerja'));
     }
 
     /**
@@ -97,16 +128,20 @@ class AnggotaController extends Controller
      * @param  \App\Models\Anggota  $anggota
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Anggota $anggota)
+    public function update(Request $request, $id )
     {
-        $validated = $request->validate([
-            'wilayah_hukum_id' => 'nullable',
-            'nama' => 'required'
-        ]);
-
+        // $validated = $request->validate([
+        //     'wilayah_hukum_id' => 'nullable',
+        //     'nama' => 'required'
+        // ]);
+        $anggota = Anggota::findOrFail($id);
         $slug = Str::replace('-', '_', $this->slug);
         $this->model = $$slug;
-        $this->model->update($validated);
+        $this->model->update($request->all());
+
+        $this->upload($this->model, $request);
+
+        
 
         return back()
             ->with('status', 'success')
@@ -128,5 +163,33 @@ class AnggotaController extends Controller
         return back()
             ->with('status', 'success')
             ->with('message', 'Berhasil menghapus');
+    }
+
+    public function upload($anggota, Request $request)
+    {
+        $data = [];
+        $names = [
+            //'file_bpjs',
+            //'file_npwp',
+            //'file_nik',
+            'file_paspor',
+            //'file_kk',
+            'file_akta_lahir',
+            'foto'
+        ];
+
+        foreach($names as $name)
+        {
+            if($request->hasFile($name))
+            {
+                $file = $request->file($name);
+                $hashname = $file->hashName();
+                $path = $request->file($name)->storeAs("anggota", $hashname, "public_upload");
+                $data[$name] = $path;
+            }
+            
+        }
+
+        return $anggota->update($data);
     }
 }

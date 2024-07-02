@@ -1,10 +1,10 @@
 -- -------------------------------------------------------------
--- TablePlus 6.0.4(556)
+-- TablePlus 6.0.8(562)
 --
 -- https://tableplus.com/
 --
 -- Database: phl
--- Generation Time: 2024-06-03 08:44:49.8200
+-- Generation Time: 2024-06-18 16:49:42.2450
 -- -------------------------------------------------------------
 
 
@@ -19,54 +19,78 @@
 
 
 CREATE TABLE `anggota` (
-  `id` int NOT NULL,
-  `nama` varchar(150) NOT NULL DEFAULT '',
-  `wilayah_hukum_id` int DEFAULT NULL,
-  `tempat_lahir` int NOT NULL,
-  `tanggal_lahir` int NOT NULL,
-  `agama` int NOT NULL,
-  `suku` int NOT NULL,
-  `hp` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nama` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `satuan_kerja_id` int DEFAULT NULL,
+  `tempat_lahir` varchar(255) DEFAULT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
+  `agama` varchar(255) DEFAULT NULL,
+  `suku` varchar(255) DEFAULT NULL,
+  `hp` varchar(255) DEFAULT NULL,
   `nama_panggilan` varchar(150) DEFAULT NULL,
-  `golongan_daran` varchar(30) DEFAULT NULL,
+  `golongan_darah` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
   `jenis_kelamin` int DEFAULT NULL,
-  `jenis_rambut` int NOT NULL,
-  `warna_mata` int NOT NULL,
-  `warna_kulit` int NOT NULL,
-  `warna_rambut` int NOT NULL,
-  `anak_ke` int NOT NULL,
-  `anak_dari` int NOT NULL,
-  `alamat` text NOT NULL,
-  `tinggi` float NOT NULL,
-  `berat` float NOT NULL,
-  `ukuran_topi` varchar(10) NOT NULL,
-  `ukuran_sepatu` varchar(10) NOT NULL,
-  `ukuran_celana` varchar(10) NOT NULL,
-  `ukuran_baju` varchar(10) NOT NULL,
+  `jenis_rambut` varchar(255) DEFAULT NULL,
+  `warna_mata` varchar(255) DEFAULT NULL,
+  `warna_kulit` varchar(255) DEFAULT NULL,
+  `warna_rambut` varchar(255) DEFAULT NULL,
+  `anak_ke` varchar(255) DEFAULT NULL,
+  `anak_dari` varchar(255) DEFAULT NULL,
+  `alamat` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
+  `tinggi` float DEFAULT NULL,
+  `berat` float DEFAULT NULL,
+  `ukuran_topi` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ukuran_sepatu` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ukuran_celana` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ukuran_baju` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `sidik_jari_1` text,
   `sidik_jari_2` text,
   `file_bpjs` text,
   `file_npwp` text,
   `nik` varchar(16) DEFAULT NULL,
-  `file_akte_lahir` text,
+  `file_akta_lahir` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
   `jenis_anggota_id` int DEFAULT NULL,
   `foto` text,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(255) DEFAULT NULL,
+  `status_pernikahan` varchar(255) DEFAULT NULL,
+  `file_paspor` text,
+  `file_kk` text,
+  `file_ktp` text,
+  `bpjs` text,
+  `npwp` text,
+  `nomor_kk` text,
+  `nomor_keanggotaan` text,
+  `no_phl` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `connection` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `queue` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `payload` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `exception` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `jabatan_anggota` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) DEFAULT NULL,
+  `no_sprin_awal` varchar(255) DEFAULT NULL,
+  `tamat_jabatan` int DEFAULT NULL,
+  `file` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `anggota_id` int DEFAULT NULL,
+  `satuan_kerja_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `jenis_anggota` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -74,7 +98,7 @@ CREATE TABLE `jenis_anggota` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `kecamatan` (
   `id` char(7) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
@@ -89,7 +113,7 @@ CREATE TABLE `keluarga_anggota` (
   `id` int NOT NULL AUTO_INCREMENT,
   `anggota_id` int NOT NULL,
   `nama` varchar(150) NOT NULL,
-  `jenis_kelamin` int DEFAULT NULL,
+  `jenis_kelamin` varchar(255) DEFAULT NULL,
   `hubungan_keluarga` varchar(50) DEFAULT NULL,
   `status` varchar(30) DEFAULT NULL,
   `pekerjaan` varchar(50) DEFAULT NULL,
@@ -102,8 +126,9 @@ CREATE TABLE `keluarga_anggota` (
   `alamat` text,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `file_buku_nikah` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `kelurahan` (
   `id` char(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
@@ -125,26 +150,26 @@ CREATE TABLE `kota` (
 
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `pendidikan_anggota` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `anggota_id` int NOT NULL,
-  `tingkat` varchar(30) NOT NULL,
-  `institusi` varchar(150) NOT NULL,
+  `anggota_id` int DEFAULT NULL,
+  `tingkat` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `institusi` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `tampilkan_gelar` int NOT NULL DEFAULT '1',
+  `tampilkan_gelar` varchar(5) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `tanggal_mulai_pendidikan` date DEFAULT NULL,
   `akreditasi` varchar(10) DEFAULT NULL,
   `file_akreditasi` text,
@@ -153,8 +178,9 @@ CREATE TABLE `pendidikan_anggota` (
   `jurusan` varchar(150) DEFAULT NULL,
   `nomor_ijazah` varchar(150) DEFAULT NULL,
   `file_ijazah` text,
+  `file_transkrip_nilai` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `provinsi` (
   `id` char(2) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
@@ -168,7 +194,7 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `satuan_kerja` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -177,7 +203,7 @@ CREATE TABLE `satuan_kerja` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `sim_anggota` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -192,18 +218,18 @@ CREATE TABLE `sim_anggota` (
 
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `satuan_kerja_id` int DEFAULT NULL,
   `role_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `wilayah_hukum` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -213,6 +239,17 @@ CREATE TABLE `wilayah_hukum` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `anggota` (`id`, `nama`, `satuan_kerja_id`, `tempat_lahir`, `tanggal_lahir`, `agama`, `suku`, `hp`, `nama_panggilan`, `golongan_darah`, `email`, `jenis_kelamin`, `jenis_rambut`, `warna_mata`, `warna_kulit`, `warna_rambut`, `anak_ke`, `anak_dari`, `alamat`, `tinggi`, `berat`, `ukuran_topi`, `ukuran_sepatu`, `ukuran_celana`, `ukuran_baju`, `sidik_jari_1`, `sidik_jari_2`, `file_bpjs`, `file_npwp`, `nik`, `file_akta_lahir`, `jenis_anggota_id`, `foto`, `created_at`, `updated_at`, `status`, `status_pernikahan`, `file_paspor`, `file_kk`, `file_ktp`, `bpjs`, `npwp`, `nomor_kk`, `nomor_keanggotaan`, `no_phl`) VALUES
+(1, 'Bagas Topati', 1, 'medan', '2024-06-03', 'Islam', 'jawa', NULL, 'bagas topati', NULL, 'bagas.topati@gmail..com', 1, 'Ikal', 'Biru', 'Kuning Langsat', 'Cokelat', '1', '10', 'jl ileng', 150, 60, '11', '10', '14', NULL, '171110100', '171110100', NULL, NULL, '171110100', 'anggota/jqBJNLDTVzMywoqZU9BTuVG1c4IcT4II4hpjl5Di.png', NULL, 'anggota/mHhbVU4yH3GbZZJxGwjm1K6xMoGFBlwv8WlEfI8D.png', '2024-06-03 06:51:33', '2024-06-15 09:23:01', 'NON K2', 'Cerai Hidup', 'anggota/OhIjH0BG3iDxQgZIfnVwiaGwSddPOh4k5shOSmDS.png', NULL, NULL, '17111010', '171110100', '171110100', '171110100', NULL),
+(2, 'PAK LAN', 1, 'medan', '2024-06-03', 'Islam', 'jawa', NULL, 'bagas topati', NULL, 'bagas.topati@gmail..com', 1, 'Ikal', 'Biru', 'Kuning Langsat', 'Cokelat', '1', '10', 'jl ileng', 150, 60, '11', '10', '14', NULL, '171110100', '171110100', NULL, NULL, '171110100', 'anggota/jqBJNLDTVzMywoqZU9BTuVG1c4IcT4II4hpjl5Di.png', NULL, 'anggota/mHhbVU4yH3GbZZJxGwjm1K6xMoGFBlwv8WlEfI8D.png', '2024-06-03 06:51:33', '2024-06-15 09:23:01', 'NON K2', 'Cerai Hidup', 'anggota/OhIjH0BG3iDxQgZIfnVwiaGwSddPOh4k5shOSmDS.png', NULL, NULL, '17111010', '171110100', '171110100', '171110100', NULL);
+
+INSERT INTO `jabatan_anggota` (`id`, `nama`, `no_sprin_awal`, `tamat_jabatan`, `file`, `created_at`, `updated_at`, `anggota_id`, `satuan_kerja_id`) VALUES
+(1, 'nama', 'no sprin awal', 2024, 'jabatan-anggota/4NWaW8IL7vWArQiEaUFn0QMG5nL0iSzRVED1xGyW.png', '2024-06-03 08:19:09', '2024-06-15 04:05:05', 1, 6);
+
+INSERT INTO `jenis_anggota` (`id`, `nama`, `created_at`, `updated_at`) VALUES
+(1, 'K2', '2024-06-03 14:03:44', '2024-06-03 14:03:44'),
+(2, 'NON K2', '2024-06-03 14:03:44', '2024-06-03 14:03:44');
 
 INSERT INTO `kecamatan` (`id`, `kota_id`, `nama`) VALUES
 ('1101010', '1101', 'TEUPAH SELATAN'),
@@ -7458,6 +7495,9 @@ INSERT INTO `kecamatan` (`id`, `kota_id`, `nama`) VALUES
 ('9471021', '9471', 'HERAM'),
 ('9471030', '9471', 'JAYAPURA SELATAN'),
 ('9471040', '9471', 'JAYAPURA UTARA');
+
+INSERT INTO `keluarga_anggota` (`id`, `anggota_id`, `nama`, `jenis_kelamin`, `hubungan_keluarga`, `status`, `pekerjaan`, `nik`, `file_nik`, `tempat_lahir`, `tanggal_lahir`, `foto`, `telp`, `alamat`, `created_at`, `updated_at`, `file_buku_nikah`) VALUES
+(1, 1, 'FARMIN', 'Pria', 'AYAHHH', 'Hidup', 'WIRASWASTA', '171110100', NULL, 'MEDAN', '2024-06-03', NULL, '08786789', 'ALAMAT UPDATE', '2024-06-03 09:19:55', '2024-06-15 03:52:14', 'pendidikan-anggota/A3NUdcITnqisaWykMDMiLvZIeric3eLW1gG92ZlJ.png');
 
 INSERT INTO `kelurahan` (`id`, `kecamatan_id`, `nama`) VALUES
 ('1101010001', '1101010', 'LATIUNG'),
@@ -88738,6 +88778,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1);
 
+INSERT INTO `pendidikan_anggota` (`id`, `anggota_id`, `tingkat`, `institusi`, `created_at`, `updated_at`, `tampilkan_gelar`, `tanggal_mulai_pendidikan`, `akreditasi`, `file_akreditasi`, `transkrip_nilai`, `tanggal_lulus`, `jurusan`, `nomor_ijazah`, `file_ijazah`, `file_transkrip_nilai`) VALUES
+(5, 1, 'SD', 'KEBUN SAYUR', '2024-06-03 10:14:18', '2024-06-15 03:44:09', 'Ya', '2024-06-03', 'C', 'pendidikan-anggota/lK28RqtMOmdQkafaP0Z0N5Bp6zmWqahkfnlRqqFE.png', '171110100', '2024-06-03', 'JURUSAN', 'NOMOR IJAZAH', 'pendidikan-anggota/Sym0efOCOsEtnGieHBCphcsVMjM5QEsipYuyw9cD.png', 'pendidikan-anggota/GQfHcFHdrhQFwWb0a3o7TGRWkMReTKsWICGNbAtU.png');
+
 INSERT INTO `provinsi` (`id`, `nama`) VALUES
 ('11', 'ACEH'),
 ('12', 'SUMATERA UTARA'),
@@ -88784,11 +88827,12 @@ INSERT INTO `satuan_kerja` (`id`, `nama`, `jenis`, `created_at`, `updated_at`) V
 (3, 'DITRESKRIMUM', 'SATKER', '2024-05-18 06:44:48', '2024-05-18 06:44:48'),
 (4, 'POLRESTABES MEDAN', 'SATWIL', '2024-05-18 06:45:01', '2024-05-18 06:45:01'),
 (5, 'POLRES BINJAI', 'SATWIL', '2024-05-18 06:45:10', '2024-05-18 06:45:10'),
-(6, 'POLRES DAIRI', 'SATWIL', '2024-05-18 06:45:18', '2024-05-18 06:45:18');
+(6, 'POLRES DAIRI', 'SATWIL', '2024-05-18 06:45:18', '2024-05-18 06:45:18'),
+(7, 'POLRES ASAHAN', 'SATWIL', '2024-06-15 11:58:58', '2024-06-15 11:58:58');
 
 INSERT INTO `users` (`id`, `nama`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `satuan_kerja_id`, `role_id`) VALUES
 (1, 'paklan', 'paklan@gmail.com', NULL, '$2a$12$82T2AnJ4JysMD6TUcFtZoeyVYyCIxigdck2hixe6BW1pcDGiaiVTO', NULL, NULL, NULL, NULL, 2),
-(2, 'JUNEDI', 'junedi', NULL, '$2y$10$m3Cx8MBms5iRZFy8QwTNZuaHzeVW6aOSOe0NwSa1bVAxckYato4X6', NULL, '2024-05-18 07:18:47', '2024-05-18 07:21:21', 3, 1);
+(2, 'JUNEDI', 'junedi@gmail.com', NULL, '$2y$10$uM7puQIOXQyj5GVRpNIE9OCF5wC.6S8LBr/gZ1tuw9Ra5.uYSdISS', NULL, '2024-05-18 07:18:47', '2024-06-15 10:59:04', 3, 1);
 
 INSERT INTO `wilayah_hukum` (`id`, `wilayah_hukum_id`, `nama`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'MABES', '2024-05-18 03:17:40', '2024-05-18 03:24:41'),
